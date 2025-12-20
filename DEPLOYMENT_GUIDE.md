@@ -21,17 +21,37 @@ Your video-meet app has **two parts**:
 
 2. **Create a new project:**
    - Click "New Project"
-   - Select "Deploy from GitHub repo" (or upload the `server` folder)
+   - Select "Deploy from GitHub repo" (connect your repository)
 
-3. **Configure the project:**
-   - Root directory: `server`
-   - Build command: `npm install`
-   - Start command: `npm start`
-   - Port: Railway will auto-detect (uses `process.env.PORT`)
+3. **IMPORTANT - Configure Root Directory:**
+   - After connecting your repo, click on your service
+   - Go to **Settings** tab
+   - Scroll down to **Root Directory**
+   - Set it to: `server`
+   - Click **Save**
 
-4. **Get your server URL:**
-   - After deployment, Railway gives you a URL like: `https://your-app.railway.app`
-   - Copy this URL - you'll need it for the frontend
+4. **Configure Build Settings (if needed):**
+   - Go to **Variables** tab
+   - Railway should auto-detect Node.js
+   - If not, add: `NODE_VERSION` = `18` (or `20`)
+
+5. **Deploy:**
+   - Railway will automatically detect `package.json` in the `server` folder
+   - It will run `npm install` and `npm start`
+   - Watch the deployment logs
+
+6. **Get your server URL:**
+   - After deployment, go to **Settings** → **Networking**
+   - Click **Generate Domain** (or use the default one)
+   - Copy the URL (e.g., `https://your-app.railway.app`)
+   - **Important:** Make sure to copy the full URL including `https://`
+
+**Troubleshooting Railway Build Error:**
+- If you see "Error creating build plan with Railpack":
+  1. Make sure **Root Directory** is set to `server` in Settings
+  2. Verify `server/package.json` exists
+  3. Try redeploying after setting the root directory
+  4. Check that your repo is properly connected
 
 ### Option B: Render (Free tier available)
 
