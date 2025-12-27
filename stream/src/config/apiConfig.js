@@ -5,7 +5,22 @@
 const getApiUrl = () => {
   // Check for environment variable (set in Netlify or .env file)
   if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+    let url = import.meta.env.VITE_API_URL.trim();
+    
+    // Ensure URL has protocol (https for production, http for localhost)
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      // If it's localhost, use http, otherwise use https
+      if (url.includes('localhost') || url.includes('127.0.0.1')) {
+        url = `http://${url}`;
+      } else {
+        url = `https://${url}`;
+      }
+    }
+    
+    // Remove trailing slash
+    url = url.replace(/\/$/, '');
+    
+    return url;
   }
   
   // Default to localhost for development
@@ -13,7 +28,8 @@ const getApiUrl = () => {
 };
 
 export const API_URL = getApiUrl();
-export const SOCKET_URL = getApiUrl().replace('/api', ''); // Remove /api if present, or use as is
+// Socket.io uses the same base URL as the API (without /api path)
+export const SOCKET_URL = getApiUrl();
 
 // Helper function to build API endpoints
 export const apiEndpoints = {
